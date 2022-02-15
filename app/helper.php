@@ -7,16 +7,24 @@ function search_topic(){
     return $search_topics;
 }
 
-function searchTopicOption($topics){
+function searchTopicOption($topics = false){
     $selected_array = $topics;
     $searchArray = Topic::get();
     //echo '<pre>';print_r($searchArray);exit;
-    if(!empty($selected_array)){
+    
+    if(!empty($selected_array) && is_array($selected_array)){
         foreach($searchArray as $value){
             $sel=(in_array($value->id, $selected_array))?' selected="selected"':'';
                 echo '<option value="'.$value->id.'"'.$sel.'>'.$value->topic_name.'</option>';
-            }
-    }else{
+        }
+    }
+    elseif(!is_array($selected_array)){
+        foreach($searchArray as $value){
+            $sel=($value->id == $selected_array)?' selected="selected"':'';
+                echo '<option value="'.$value->id.'"'.$sel.'>'.$value->topic_name.'</option>';
+        }
+    }
+    else{
         foreach($searchArray as $value){
             echo '<option value="'.$value->id.'">'.$value->topic_name.'</option>';
         }
@@ -67,6 +75,32 @@ function locationOption($selected = false){
         }
     }
     return $location_option;
+}
+
+function calender($param){
+    $month_name = '';
+    $calenderArray = array('1'=>'January', '2'=>'February', '3'=>'March', '4'=>'April', '5'=>'May', '6'=>'June', '7'=>'July', '8'=>'August', '9' => 'September', '10' => 'October', '11' => 'November', '12' => 'December');
+    if(!empty($calenderArray)){
+        foreach($calenderArray as $k => $month){
+            if($param == $k){
+                $month_name = $month;
+            }
+        }
+    }
+    return $month_name;
+}
+
+function topicName($param){
+    $topic_name = '';
+    $topics = Topic::get();
+    if($topics){
+        foreach($topics as $data){
+            if($data->id == $param){
+                $topic_name = $data->topic_name;
+            }
+        }
+    }
+    return $topic_name;
 }
 
 

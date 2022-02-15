@@ -4,19 +4,31 @@
 
 <!-- Content Header (Page header) -->
 <div class="content-header">
-    <div class="container-fluid">
-    <div class="row mb-2">
-        <div class="col-sm-6">
-        <h1 class="m-0">Dashboard</h1>
-        </div><!-- /.col -->
-        <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">Chart</li>
-        </ol>
-        </div><!-- /.col -->
-    </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
+  <form method="get">
+      <div class="container-fluid">
+      <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0">Dashboard</h1>
+          </div><!-- /.col -->
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <select name= "search_topic" class="select2" style="width: 100%;">
+                  <option value=''>--select topic--</option>
+                  @php echo searchTopicOption($search_topic)  @endphp
+              </select>
+            </div>
+          </div>
+
+          <div class="col-sm-1">
+            <button type="submit" class="btn btn-md btn-default">
+                <i class="fa fa-search"></i>
+            </button>
+
+          </div><!-- /.col -->
+      </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+  </form>
 </div>
 <!-- /.content-header -->
 
@@ -29,7 +41,7 @@
         <!-- PIE CHART -->
         <div class="card card-danger">
             <div class="card-header">
-            <h3 class="card-title">Pie Chart</h3>
+            <h3 class="card-title">Topic Wise Post</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -47,10 +59,10 @@
         </div>
         <!-- /.card -->
 
-        <!-- AREA CHART -->
-        <div class="card card-primary" style="display:none">
+        <!-- STACKED BAR CHART -->
+        <div class="card card-primary" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Area Chart</h3>
+            <h3 class="card-title">Likes vs Comments <?= ($search_topic)? ' For '.topicName($search_topic): '' ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -63,40 +75,15 @@
             </div>
             <div class="card-body">
             <div class="chart">
-                <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
             </div>
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
 
-        <!-- DONUT CHART -->
-        <div class="card card-danger" style="display:none">
-            <div class="card-header">
-            <h3 class="card-title">Donut Chart</h3>
-
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-                </button>
-            </div>
-            </div>
-            <div class="card-body">
-            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-
-        </div>
-        <!-- /.col (LEFT) -->
-        <div class="col-md-6">
-
-         <!-- BAR CHART -->
-         <div class="card card-success">
+        <!-- BAR CHART -->
+        <div class="card card-success" style="display:none">
             <div class="card-header">
             <h3 class="card-title">Bar Chart</h3>
 
@@ -116,12 +103,16 @@
             </div>
             <!-- /.card-body -->
         </div>
-        <!-- /.card -->
+        <!-- /.card --> 
+
+        </div>
+        <!-- /.col (LEFT) -->
+        <div class="col-md-6">
 
         <!-- LINE CHART -->
-        <div class="card card-info" style="display:none">
+        <div class="card card-info" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Line Chart</h3>
+            <h3 class="card-title">Month Wise Post <?= ($search_topic)? ' For '.topicName($search_topic): '' ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -141,12 +132,31 @@
         </div>
         <!-- /.card -->
 
-       
-
-        <!-- STACKED BAR CHART -->
-        <div class="card card-success" style="display:none">
+        <!-- DONUT CHART -->
+        <div class="card card-success" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Stacked Bar Chart</h3>
+            <h3 class="card-title">Donut Chart</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+                </button>
+            </div>
+            </div>
+            <div class="card-body">
+            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->      
+
+        <!-- AREA CHART -->
+        <div class="card card-primary" style="display:none">
+            <div class="card-header">
+            <h3 class="card-title">Area Chart</h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -159,7 +169,7 @@
             </div>
             <div class="card-body">
             <div class="chart">
-                <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                <canvas id="areaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
             </div>
             <!-- /.card-body -->
@@ -250,11 +260,28 @@
     //-------------
     //- LINE CHART -
     //--------------
+
+    var lineChartDatas = {
+      labels  : <?= $line_month?>,
+      datasets: [
+        {
+          label               : 'Digital Goods',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : <?= $line_post ?>
+        },
+      ]
+    }
+
     var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
     var lineChartOptions = $.extend(true, {}, areaChartOptions)
-    var lineChartData = $.extend(true, {}, areaChartData)
+    var lineChartData = $.extend(true, {}, lineChartDatas)
     lineChartData.datasets[0].fill = false;
-    lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false
 
     var lineChart = new Chart(lineChartCanvas, {
@@ -269,11 +296,11 @@
     // Get context with jQuery - using jQuery's .get() method.
     var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
     var donutData        = {
-      labels: <?=$s_topic_name?>,
+      labels: <?=$dg_topic_name?>,
       datasets: [
         {
-          data: <?=$s_post_count?>,
-          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
+          data: <?=$dg_total_like?>,
+          backgroundColor : ['#f56954', '#c2e8df', '#f39c12', '#00c0ef', '#3c8dbc', '#00a65a', '#d2d6de'],
         }
       ]
     }
@@ -294,7 +321,15 @@
     //-------------
     // Get context with jQuery - using jQuery's .get() method.
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = donutData;
+    var pieData        = {
+      labels: <?=$s_topic_name?>,
+      datasets: [
+        {
+          data: <?=$s_post_count?>,
+          backgroundColor : ['#f56954', '#c2e8df', '#f39c12', '#00c0ef', '#3c8dbc', '#00a65a', '#d2d6de'],
+        }
+      ]
+    }
     var pieOptions     = {
       maintainAspectRatio : false,
       responsive : true,
@@ -310,12 +345,28 @@
     //-------------
     //- BAR CHART -
     //-------------
+
+    var barChartDatas = {
+      labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+      datasets: [
+        {
+          label               : 'Digital Goods',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : [28, 48, 40, 19, 86, 27, 90]
+        },
+      ]
+    }
+
     var barChartCanvas = $('#barChart').get(0).getContext('2d')
-    var barChartData = $.extend(true, {}, areaChartData)
-    var temp0 = areaChartData.datasets[0]
-    var temp1 = areaChartData.datasets[1]
-    barChartData.datasets[0] = temp1
-    barChartData.datasets[1] = temp0
+    var barChartData = $.extend(true, {}, barChartDatas)
+    var temp0 = barChartDatas.datasets[0]
+    barChartData.datasets[0] = temp0
 
     var barChartOptions = {
       responsive              : true,
@@ -332,8 +383,37 @@
     //---------------------
     //- STACKED BAR CHART -
     //---------------------
+
+    var stackedBarChartData = {
+      labels  : <?= $sbg_months?>,
+      datasets: [
+        {
+          label               : 'Likes',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : <?= $sbg_likes?>
+        },
+        {
+          label               : 'Comments',
+          backgroundColor     : 'rgba(210, 214, 222, 1)',
+          borderColor         : 'rgba(210, 214, 222, 1)',
+          pointRadius         : false,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : <?= $sbg_comments ?>
+        },
+      ]
+    }
+
     var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-    var stackedBarChartData = $.extend(true, {}, barChartData)
+    var stackedBarChartData = $.extend(true, {}, stackedBarChartData)
 
     var stackedBarChartOptions = {
       responsive              : true,
