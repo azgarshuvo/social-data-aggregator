@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    //return view('welcome');
+    return redirect('/login');
 });
 
 Auth::routes();
@@ -32,6 +33,7 @@ Route::post('/store', [App\Http\Controllers\AuthorController::class, 'store'])->
 Route::get('/dashboard/v1', [App\Http\Controllers\DashboardController::class, 'dashboard'])->name('dashboard-v1');
 Route::get('/dashboard/v2', [App\Http\Controllers\DashboardController::class, 'dashboard_v2'])->name('dashboard-v2');
 Route::get('/dashboard/v4', [App\Http\Controllers\DashboardController::class, 'dashboard_v4'])->name('dashboard-v4');
+Route::get('/dashboard/v5', [App\Http\Controllers\DashboardController::class, 'dashboard_v5'])->name('dashboard-v5');
 Route::get('/dashboard/chart', [App\Http\Controllers\DashboardController::class, 'chart'])->name('dashboard-chart');
 
 

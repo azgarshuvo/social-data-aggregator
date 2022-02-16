@@ -10,21 +10,18 @@
         <h1>Social Posts</h1>
         </div>
         <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">DataTables</li>
-        </ol>
+            <ol class="breadcrumb float-sm-right">
+            </ol>
         </div>
     </div>
     </div><!-- /.container-fluid -->
 
     <div class="container-fluid">
-        <h2 class="text-center display-6">Search</h2>
         <form method="get">
             <div class="row">
                 <div class="col-md-10 offset-md-1">
                     <div class="row">
-                        <div class="col-6">
+                        <div class="col-4">
                             <div class="form-group">
                                 <label>Result Type:</label>
                                 <select name="topics[]" class="select2" multiple="multiple" data-placeholder="Select Topic" style="width: 100%;">
@@ -40,7 +37,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-4">
                             <div class="form-group">
                                 <label>Location:</label>
                                 <select name="location" class="select2" style="width: 100%;">
@@ -48,15 +45,10 @@
                                 </select>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="input-group input-group-lg">
-                            <input type="search" class="form-control form-control-lg" placeholder="Type your keywords here" value="Lorem ipsum">
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-lg btn-default">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </div>
+                        <div class="col-1">
+                            <button type="submit" class="btn btn-md btn-default" style="margin-top:32px;">
+                                <i class="fa fa-search"></i>
+                            </button>
                         </div>
                     </div>
                 </div>

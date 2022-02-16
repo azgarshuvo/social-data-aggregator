@@ -36,7 +36,7 @@ class DashboardController extends Controller
         if(!empty($topics)){
             $social_post->whereIn('postby_tags.topic_id', $topics);
         }
-        $social_post = $social_post->paginate(100);
+        $social_post = $social_post->paginate(1000);
         //dd($social_post);
                 
         return view('front.dashboard2', compact('social_post', 'topics', 'data_from', 'location'));
@@ -73,6 +73,42 @@ class DashboardController extends Controller
         $s_topic_name = "['" . implode("','",$topic_name) . "']";
         $s_post_count = "[" . implode(",",$post_count) . "]";
 
+
+        //Dognut Chart -- topic wise likes
+        $d_topic_name = array();
+        $d_total_like = array();
+        $dg_chart_data = DB::table('postby_tags');
+        $dg_chart_data->join('social_posts', 'postby_tags.post_id', '=', 'social_posts.id');
+        $dg_chart_data->join('topics', 'postby_tags.topic_id', '=', 'topics.id');
+        $dg_chart_data->select('topics.topic_name', DB::raw('sum(social_posts.like_count) as total_like'));
+        $dg_chart_data->groupBy('postby_tags.topic_id');
+        $dg_chart_data->orderBy('total_like', 'DESC');
+        $dg_chart_data = $dg_chart_data->paginate(7);
+        //dd($dg_chart_data);
+
+        if(!empty($dg_chart_data)){
+            foreach($dg_chart_data as $val){
+                $d_topic_name[] = $val->topic_name;
+                $d_total_like[] = $val->total_like;
+            }
+        }
+        $dg_topic_name = "['" . implode("','",$d_topic_name) . "']";
+        $dg_total_like = "[" . implode(",",$d_total_like) . "]";
+
+        return view('front.dashboard4', compact('s_topic_name', 's_post_count', 'dg_topic_name', 'dg_total_like'));
+        
+
+        //SELECT COUNT(`id`), MONTH(post_date) as year_wise_post FROM `social_posts` GROUP BY MONTH(post_date);
+        //https://intellipaat.com/community/3892/mysql-query-group-by-day-month-year
+
+
+        
+    }
+
+    public function dashboard_v5(Request $request)
+    {    
+         
+        $search_topic = $request->search_topic;
 
 
         //line chart -- month wise post
@@ -128,29 +164,7 @@ class DashboardController extends Controller
         $sbg_comments = "[" . implode(",",$sb_comments) . "]";
         //dd($stack_bar_data);
 
-
-        //Dognut Chart -- topic wise likes
-        $d_topic_name = array();
-        $d_total_like = array();
-        $dg_chart_data = DB::table('postby_tags');
-        $dg_chart_data->join('social_posts', 'postby_tags.post_id', '=', 'social_posts.id');
-        $dg_chart_data->join('topics', 'postby_tags.topic_id', '=', 'topics.id');
-        $dg_chart_data->select('topics.topic_name', DB::raw('sum(social_posts.like_count) as total_like'));
-        $dg_chart_data->groupBy('postby_tags.topic_id');
-        $dg_chart_data->orderBy('total_like', 'DESC');
-        $dg_chart_data = $dg_chart_data->paginate(7);
-        //dd($dg_chart_data);
-
-        if(!empty($dg_chart_data)){
-            foreach($dg_chart_data as $val){
-                $d_topic_name[] = $val->topic_name;
-                $d_total_like[] = $val->total_like;
-            }
-        }
-        $dg_topic_name = "['" . implode("','",$d_topic_name) . "']";
-        $dg_total_like = "[" . implode(",",$d_total_like) . "]";
-
-        return view('front.dashboard4', compact('search_topic', 's_topic_name', 's_post_count', 'line_month', 'line_post', 'sbg_months', 'sbg_likes', 'sbg_comments', 'dg_topic_name', 'dg_total_like'));
+        return view('front.dashboard5', compact('search_topic', 'line_month', 'line_post', 'sbg_months', 'sbg_likes', 'sbg_comments'));
         
 
         //SELECT COUNT(`id`), MONTH(post_date) as year_wise_post FROM `social_posts` GROUP BY MONTH(post_date);

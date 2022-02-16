@@ -8,7 +8,23 @@
       <div class="container-fluid">
       <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Topic Wise Dashboard</h1>
+            <h1 class="m-0">Month Wise Dashboard</h1>
+          </div><!-- /.col -->
+
+          <div class="col-sm-5">
+            <div class="form-group">
+              <select name= "search_topic" class="select2" style="width: 100%;">
+                  <option value=''>--select topic--</option>
+                  @php echo searchTopicOption($search_topic)  @endphp
+              </select>
+            </div>
+          </div>
+
+          <div class="col-sm-1">
+            <button type="submit" class="btn btn-md btn-default">
+                <i class="fa fa-search"></i>
+            </button>
+
           </div><!-- /.col -->
       </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -22,31 +38,10 @@
     <div class="row">
         <div class="col-md-6">
 
-        <!-- PIE CHART -->
-        <div class="card card-danger">
-            <div class="card-header">
-            <h3 class="card-title">Popular Topic Based On Post</h3>
-
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-                </button>
-            </div>
-            </div>
-            <div class="card-body">
-            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
-
         <!-- STACKED BAR CHART -->
-        <div class="card card-primary" style="display:none">
+        <div class="card card-primary" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Likes vs Comments</h3>
+            <h3 class="card-title">Likes vs Comments <?= ($search_topic)? ' For '.topicName($search_topic): '' ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -61,6 +56,27 @@
             <div class="chart">
                 <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+
+        <!-- PIE CHART -->
+        <div class="card card-danger" style="display:none">
+            <div class="card-header">
+            <h3 class="card-title">Topic Wise Post</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+                </button>
+            </div>
+            </div>
+            <div class="card-body">
+            <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
             </div>
             <!-- /.card-body -->
         </div>
@@ -93,31 +109,10 @@
         <!-- /.col (LEFT) -->
         <div class="col-md-6">
 
-        <!-- DONUT CHART -->
-        <div class="card card-success" style="display:block">
-            <div class="card-header">
-            <h3 class="card-title">Popular Topic Based On Likes</h3>
-
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-                </button>
-            </div>
-            </div>
-            <div class="card-body">
-            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->  
-
         <!-- LINE CHART -->
-        <div class="card card-info" style="display:none">
+        <div class="card card-info" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Month Wise Post</h3>
+            <h3 class="card-title">Month Wise Post <?= ($search_topic)? ' For '.topicName($search_topic): '' ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -135,7 +130,28 @@
             </div>
             <!-- /.card-body -->
         </div>
-        <!-- /.card -->    
+        <!-- /.card -->
+
+        <!-- DONUT CHART -->
+        <div class="card card-success" style="display:none">
+            <div class="card-header">
+            <h3 class="card-title">Donut Chart</h3>
+
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+                </button>
+            </div>
+            </div>
+            <div class="card-body">
+            <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+            </div>
+            <!-- /.card-body -->
+        </div>
+        <!-- /.card -->      
 
         <!-- AREA CHART -->
         <div class="card card-primary" style="display:none">
@@ -244,11 +260,28 @@
     //-------------
     //- LINE CHART -
     //--------------
+
+    var lineChartDatas = {
+      labels  : <?= $line_month?>,
+      datasets: [
+        {
+          label               : 'Digital Goods',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : <?= $line_post ?>
+        },
+      ]
+    }
+
     var lineChartCanvas = $('#lineChart').get(0).getContext('2d')
     var lineChartOptions = $.extend(true, {}, areaChartOptions)
-    var lineChartData = $.extend(true, {}, areaChartData)
+    var lineChartData = $.extend(true, {}, lineChartDatas)
     lineChartData.datasets[0].fill = false;
-    lineChartData.datasets[1].fill = false;
     lineChartOptions.datasetFill = false
 
     var lineChart = new Chart(lineChartCanvas, {
@@ -263,11 +296,18 @@
     // Get context with jQuery - using jQuery's .get() method.
     var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
     var donutData        = {
-      labels: <?=$dg_topic_name?>,
+      labels: [
+          'Chrome',
+          'IE',
+          'FireFox',
+          'Safari',
+          'Opera',
+          'Navigator',
+      ],
       datasets: [
         {
-          data: <?=$dg_total_like?>,
-          backgroundColor : ['#f56954', '#c2e8df', '#f39c12', '#00c0ef', '#3c8dbc', '#00a65a', '#d2d6de'],
+          data: [700,500,400,600,300,100],
+          backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
         }
       ]
     }
@@ -288,15 +328,7 @@
     //-------------
     // Get context with jQuery - using jQuery's .get() method.
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = {
-      labels: <?=$s_topic_name?>,
-      datasets: [
-        {
-          data: <?=$s_post_count?>,
-          backgroundColor : ['#f56954', '#c2e8df', '#f39c12', '#00c0ef', '#3c8dbc', '#00a65a', '#d2d6de'],
-        }
-      ]
-    }
+    var pieData        = donutData;
     var pieOptions     = {
       maintainAspectRatio : false,
       responsive : true,
@@ -350,8 +382,37 @@
     //---------------------
     //- STACKED BAR CHART -
     //---------------------
+
+    var stackedBarChartData = {
+      labels  : <?= $sbg_months?>,
+      datasets: [
+        {
+          label               : 'Likes',
+          backgroundColor     : 'rgba(60,141,188,0.9)',
+          borderColor         : 'rgba(60,141,188,0.8)',
+          pointRadius          : false,
+          pointColor          : '#3b8bba',
+          pointStrokeColor    : 'rgba(60,141,188,1)',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(60,141,188,1)',
+          data                : <?= $sbg_likes?>
+        },
+        {
+          label               : 'Comments',
+          backgroundColor     : 'rgba(210, 214, 222, 1)',
+          borderColor         : 'rgba(210, 214, 222, 1)',
+          pointRadius         : false,
+          pointColor          : 'rgba(210, 214, 222, 1)',
+          pointStrokeColor    : '#c1c7d1',
+          pointHighlightFill  : '#fff',
+          pointHighlightStroke: 'rgba(220,220,220,1)',
+          data                : <?= $sbg_comments ?>
+        },
+      ]
+    }
+
     var stackedBarChartCanvas = $('#stackedBarChart').get(0).getContext('2d')
-    var stackedBarChartData = $.extend(true, {}, barChartData)
+    var stackedBarChartData = $.extend(true, {}, stackedBarChartData)
 
     var stackedBarChartOptions = {
       responsive              : true,
