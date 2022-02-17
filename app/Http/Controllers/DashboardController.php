@@ -25,6 +25,8 @@ class DashboardController extends Controller
         $social_post = DB::table('postby_tags');
         $social_post->join('social_posts', 'postby_tags.post_id', '=', 'social_posts.id');
         $social_post->join('topics', 'postby_tags.topic_id', '=', 'topics.id');
+        $social_post->where('social_posts.post_details', '!=', '');
+        $social_post->where('social_posts.post_details', '!=', null);
         $social_post->select('postby_tags.post_id as pt_pid', 'postby_tags.topic_id as pt_tid', 'topics.topic_name', 'social_posts.*');
                 
         if(isset($data_from) && $data_from != ''){
@@ -36,7 +38,9 @@ class DashboardController extends Controller
         if(!empty($topics)){
             $social_post->whereIn('postby_tags.topic_id', $topics);
         }
+        //$social_post->orderBy('postby_tags.id', 'DESC');
         $social_post = $social_post->paginate(1000);
+        //echo '<pre>';print_r($social_post);exit;
         //dd($social_post);
                 
         return view('front.dashboard2', compact('social_post', 'topics', 'data_from', 'location'));

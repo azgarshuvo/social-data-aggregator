@@ -54,6 +54,7 @@ class HomeController extends Controller
         $data_from = ($request->data_from)? $request->data_from : 'twitter';
         $topics = ($request->topics)? $request->topics: json_decode($user_info->topics);
         $location = ($request->location)? $request->location: $user_info->location;
+        $location = '';
 
 
         $social_post =array();
@@ -61,6 +62,8 @@ class HomeController extends Controller
         $social_post = DB::table('postby_tags');
         $social_post->join('social_posts', 'postby_tags.post_id', '=', 'social_posts.id');
         $social_post->join('topics', 'postby_tags.topic_id', '=', 'topics.id');
+        $social_post->where('social_posts.post_details', '!=', '');
+        $social_post->where('social_posts.post_details', '!=', null);
         $social_post->select('postby_tags.post_id as pt_pid', 'postby_tags.topic_id as pt_tid', 'topics.topic_name', 'social_posts.*');
                 
         if(isset($data_from) && $data_from != ''){
@@ -73,6 +76,8 @@ class HomeController extends Controller
             $social_post->whereIn('postby_tags.topic_id', $topics);
         }
         $social_post = $social_post->get();
+        //dd($social_post);
+        //echo '<pre>';print_r($social_post);exit;
 
         return view('front.dashboard3', compact('social_post', 'data_from', 'topics', 'location'));
     }

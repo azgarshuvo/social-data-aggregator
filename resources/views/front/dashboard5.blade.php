@@ -41,7 +41,7 @@
         <!-- STACKED BAR CHART -->
         <div class="card card-primary" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Likes vs Comments <?= ($search_topic)? ' For '.topicName($search_topic): '' ?></h3>
+            <h3 class="card-title">Likes vs Comments <?= ($search_topic)? ' For Topic ['.topicName($search_topic).']': '' ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
@@ -112,7 +112,7 @@
         <!-- LINE CHART -->
         <div class="card card-info" style="display:block">
             <div class="card-header">
-            <h3 class="card-title">Month Wise Post <?= ($search_topic)? ' For '.topicName($search_topic): '' ?></h3>
+            <h3 class="card-title">Month Wise Post <?= ($search_topic)? ' For Topic ['.topicName($search_topic).']': '' ?></h3>
 
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">

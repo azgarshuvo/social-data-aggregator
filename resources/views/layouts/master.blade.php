@@ -51,6 +51,25 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Profile
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('edit-profile')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Set Choices</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
           <li class="nav-item menu-open">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
@@ -60,12 +79,6 @@
               </p>
             </a>
             <ul class="nav nav-treeview">
-              <li class="nav-item" style="display:none">
-                <a href="{{ route('dashboard-v1') }}" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Dashboard v1</p>
-                </a>
-              </li>
               <li class="nav-item">
                 <a href="{{ route('dashboard-v2') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
@@ -78,36 +91,6 @@
                   <p>Recommended Post</p>
                 </a>
               </li>
-              <li class="nav-item" style="display:none">
-                <a href="{{ route('dashboard-chart') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>ChartJS</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('dashboard-v4') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Topic Wise Data</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('dashboard-v5') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Month Wise Data</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item" style="display:none">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-pie"></i>
-              <p>
-                Dashboard
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
               <li class="nav-item" style="display:none">
                 <a href="{{ route('dashboard-chart') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>

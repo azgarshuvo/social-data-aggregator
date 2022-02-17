@@ -43,3 +43,4 @@ Route::get('/reddit/data', [App\Http\Controllers\ApiController::class, 'redditDa
 Route::get('/linkedin/data', [App\Http\Controllers\ApiController::class, 'linkedInData'])->name('linkedin-data');
 Route::get('/delete/data', [App\Http\Controllers\ApiController::class, 'deleteData'])->name('delete-data');
 Route::get('/insert/topic', [App\Http\Controllers\ApiController::class, 'insertTopics'])->name('insert-topic');
+Route::get('/test/api', [App\Http\Controllers\ApiController::class, 'TestApi'])->name('test-api');

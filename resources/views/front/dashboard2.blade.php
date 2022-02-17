@@ -1,7 +1,6 @@
 @extends('layouts.master')
 @section('titile', 'Dashboard')
 @section('content')
-
 <!-- Content Header (Page header) -->
 <section class="content-header">
     <div class="container-fluid">
@@ -63,51 +62,6 @@
     <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-        <div class="card" style="display:none">
-            <div class="card-header">
-            <h3 class="card-title">Results</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-            <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                        <th>Post Details</th>
-                        <th>Likes</th>
-                        <th>Comment</th>
-                        <th>Location</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if($social_post)
-                    @foreach($social_post as $post)
-                    <tr>
-                        <td>{{ substr($post->post_details, 25) }}</td>
-                        <td>{{ $post->like_count }}</td>
-                        <td>{{ $post->comment_count }}</td>
-                        <td>{{ $post->author_location }}</td>
-                    </tr>
-                    @endforeach
-                    @else
-                    <tr>
-                      <td colspan="5">no result found!</td>
-                    </tr>
-                    @endif
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Topic</th>
-                        <th>Post Details</th>
-                        <th>Likes</th>
-                        <th>Comment</th>
-                        <th>Location</th>
-                    </tr>
-                </tfoot>
-            </table>
-            </div>
-            <!-- /.card-body -->
-        </div>
-        <!-- /.card -->
 
         <div class="card">
             <div class="card-header">
@@ -119,6 +73,7 @@
             <thead>
                     <tr>
                         <th>Post Details</th>
+                        <th>Topic Name</th>
                         <th>Likes</th>
                         <th>Comment</th>
                         <th>Location</th>
@@ -127,12 +82,15 @@
                 <tbody>
                     @if($social_post)
                     @foreach($social_post as $post)
+                    @if(!empty(trim($post->post_details)))
                     <tr>
-                        <td>{{ substr($post->post_details, 0, 100) }}</td>
+                        <td>{{ substr($post->post_details, 0, 75) }}</td>
+                        <td>{{ $post->topic_name }}</td>
                         <td>{{ $post->like_count }}</td>
                         <td>{{ $post->comment_count }}</td>
                         <td>{{ $post->author_location }}</td>
                     </tr>
+                    @endif
                     @endforeach
                     @else
                     <tr>
@@ -143,6 +101,7 @@
                 <tfoot>
                     <tr>
                         <th>Post Details</th>
+                        <th>Topic Name</th>
                         <th>Likes</th>
                         <th>Comment</th>
                         <th>Location</th>

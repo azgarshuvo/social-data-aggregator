@@ -16,11 +16,34 @@ class ApiController extends Controller
         $postbytag_ids = array();
         $post_id = '';
         $topic_id = '';
-        $json = Storage::disk('local')->get('jsonFiles/twitter.json');
-        $datas = json_decode($json, true);
-        
+
+        //$json = Storage::disk('local')->get('jsonFiles/twitter.json');
+
+        //REST API
+        $curl = curl_init();
+        $twitter_url = 'http://localhost:8080/api/Twitter/search-tweet?trends=Afghanistan,COVID,FIFA22,Dune,AMC,SquidGame,T20worldcup,Ethereum,TigerWoods,Batllefield2042&limit=50';
+        //$reddit_url = 'http://localhost:8080/api/Reddit/search-reddit?trends=afghanistan,COVID19,FIFA22,dune,dogecoin,squidgame,sports,ethereum,tigerwoods,battlefield2042&limit=100';
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $twitter_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        //END REST API
+
+        $datas = json_decode($response, true);
+        //echo '<pre>';print_r($datas['data']);exit;
+        //dd($datas);
         if($datas){
-            foreach($datas as $data){
+            foreach($datas['data'] as $data){
+                //echo '<pre>';print_r($data);exit;
                 $topic = $data['subject'];
                 $post = new SocialPost();
                 
@@ -78,7 +101,7 @@ class ApiController extends Controller
                         $postbytag_ids[] = $postbyTag->save();
                     }
                 }
-            }
+            }//endforeach
         }
         echo count($postbytag_ids).' entry';
     }
@@ -321,6 +344,32 @@ class ApiController extends Controller
                 $i++;
             }
         }
+    }
+
+    function TestApi(){
+        $curl = curl_init();
+        //$url = "http://localhost:8080/api/Reddit/search-reddit?trends=Covid,%20Vaccine";
+        $twitter_url = 'http://localhost:8080/api/Twitter/search-tweet?trends=Afghanistan,COVID,FIFA22,Dune,AMC,SquidGame,T20worldcup,Ethereum,TigerWoods,Batllefield2042&limit=100';
+        $reddit_url = 'http://localhost:8080/api/Reddit/search-reddit?trends=afghanistan,COVID19,FIFA22,dune,dogecoin,squidgame,sports,ethereum,tigerwoods,battlefield2042&limit=100';
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $reddit_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+        $results = json_decode($response);
+        //echo count($results);
+        dd($results);
+        echo '<pre>';print_r($results);
+
+        curl_close($curl);
+        echo $response;
     }
 
 }

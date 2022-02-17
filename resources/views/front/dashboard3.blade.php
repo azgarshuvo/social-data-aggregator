@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-md-10 offset-md-1">
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-6">
                             <div class="form-group">
                                 <label>Result Type:</label>
                                 <select name="topics[]" class="select2" multiple="multiple" data-placeholder="Select Topic" style="width: 100%;">
@@ -27,7 +27,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-3">
+                        <div class="col-2">
                             <div class="form-group">
                                 <label>Platform:</label>
                                 <select name= "data_from" class="select2" style="width: 100%;">
@@ -35,7 +35,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-4">
+                        <div class="col-3">
                             <div class="form-group">
                                 <label>Location:</label>
                                 <select name="location" class="select2" style="width: 100%;">
@@ -71,6 +71,7 @@
             <thead>
                     <tr>
                         <th>Post Details</th>
+                        <th>Topic Name</th>
                         <th>Likes</th>
                         <th>Comment</th>
                         <th>Location</th>
@@ -80,7 +81,8 @@
                     @if($social_post)
                     @foreach($social_post as $post)
                     <tr>
-                        <td>{{ substr($post->post_details, 25) }}</td>
+                        <td>{{ substr($post->post_details, 0, 75) }}</td>
+                        <td>{{ $post->topic_name }}</td>
                         <td>{{ $post->like_count }}</td>
                         <td>{{ $post->comment_count }}</td>
                         <td>{{ $post->author_location }}</td>
@@ -95,6 +97,7 @@
                 <tfoot>
                     <tr>
                         <th>Post Details</th>
+                        <th>Topic Name</th>
                         <th>Likes</th>
                         <th>Comment</th>
                         <th>Location</th>
