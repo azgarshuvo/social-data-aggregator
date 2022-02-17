@@ -103,7 +103,10 @@ class ApiController extends Controller
                 }
             }//endforeach
         }
-        echo count($postbytag_ids).' entry';
+
+        $message = count($postbytag_ids).' data has been inserted successfuly for '.$post->data_from;
+        return view('front.message', compact('message'));
+        
     }
 
     public function redditData(){
@@ -111,13 +114,34 @@ class ApiController extends Controller
         $postbytag_ids = array();
         $post_id = '';
         $topic_id = '';
-        $json = Storage::disk('local')->get('jsonFiles/reddit.json');
-        $datas = json_decode($json, true);
+        //$json = Storage::disk('local')->get('jsonFiles/reddit.json');
+
+        //REST API
+        $curl = curl_init();
+        //$twitter_url = 'http://localhost:8080/api/Twitter/search-tweet?trends=Afghanistan,COVID,FIFA22,Dune,AMC,SquidGame,T20worldcup,Ethereum,TigerWoods,Batllefield2042&limit=50';
+        $reddit_url = 'http://localhost:8080/api/Reddit/search-reddit?trends=afghanistan,COVID19,FIFA22,dune,dogecoin,squidgame,sports,ethereum,tigerwoods,battlefield2042&limit=50';
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $reddit_url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+        //END REST API
+
+
+        $datas = json_decode($response, true);
 
         
         //echo '<pre>';print_r($datas);exit;
         if(!empty($datas)){
-            foreach($datas as $data){
+            foreach($datas['data'] as $data){
                 $topic = $data['subject'];
                 $post = new SocialPost();
                 
@@ -174,7 +198,9 @@ class ApiController extends Controller
                     }
                 }
             }
-            echo count($postbytag_ids).' entry';
+
+            $message = count($postbytag_ids).' data has been inserted successfuly for '.$post->data_from;
+            return view('front.message', compact('message'));
         }
     }
 

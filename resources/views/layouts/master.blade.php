@@ -112,6 +112,30 @@
             </ul>
           </li>
 
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                API calling
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('twitter-data')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Get Twitter Data</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('reddit-data')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Get Reddit Data</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
